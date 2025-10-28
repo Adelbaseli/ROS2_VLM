@@ -1,0 +1,34 @@
+1. Open terminal #1
+
+cd /home/adel/usb_cam
+
+singularity shell --nv  --env DISPLAY=$DISPLAY --env QT_X11_NO_MITSHM=1 --bind /tmp/.X11-unix:/tmp/.X11-unix  /home/adel/ros2_VLM/robin.sif
+
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+
+ros2 run usb_cam usb_cam_node_exe --ros-args \
+  -p video_device:=/dev/video2 \
+  -p pixel_format:=mjpeg2rgb \
+  -p image_width:=640 \
+  -p image_height:=480
+
+
+
+
+1. Open terminal #2
+
+cd ros2_VLM/
+
+singularity shell --nv  --env DISPLAY=$DISPLAY --env QT_X11_NO_MITSHM=1 --bind /tmp/.X11-unix:/tmp/.X11-unix  /home/adel/ros2_VLM/robin.sif
+
+
+source /opt/ros/humble/setup.bash
+export TURTLEBOT3_MODEL=burger
+source /turtlebot-ws/install/setup.bash
+source /usr/share/gazebo/setup.bash 
+source install/setup.bash
+
+
+ros2 run vision_language_models_ros visual_questioning_node
+
